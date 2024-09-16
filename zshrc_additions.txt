@@ -1,0 +1,27 @@
+# Alias's for multiple directory listing commands
+alias la='ls -lAh' # show hidden files
+alias ls='ls -aFh --color=always' # add colors and file type extensions
+alias lx='ls -lXBh' # sort by extension
+alias lk='ls -lSrh' # sort by size
+alias lc='ls -lcrh' # sort by change time
+alias lu='ls -lurh' # sort by access time
+alias lr='ls -lRh' # recursive ls
+alias lt='ls -ltrh' # sort by date
+alias lm='ls -alh |more' # pipe through 'more'
+alias lw='ls -xAh' # wide listing format
+alias ll='ls -lah' # long listing format
+alias labc='ls -lap' #alphabetical sort
+alias lf="ls -l | egrep -v '^d'" # files only
+alias ldir="ls -l | egrep '^d'" # directories only
+alias l='ls -lCF'
+alias p="ps aux | grep " # Search running processes
+alias topcpu="/bin/ps -eo pcpu,pid,user,args | sort -k 1 -r | head -10"
+
+# Run tmux when terminal is open
+if command -v tmux &> /dev/null \
+    && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] \
+    && [[ ! "$TERM" =~ tmux ]] \
+    && [ -z "$TMUX" ] \
+    && ! pstree -s $$ | grep -wq code; then # Due to error message in VSCode "Unable to resolve your shell environment: Unexpected exit code from spawned shell (code 1, signal null)"
+        exec tmux new-session -A -s main
+fi

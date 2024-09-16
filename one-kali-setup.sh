@@ -47,7 +47,7 @@ vscode_install() {
 # .zshrc additions
 zshrc_additions() {
     echo ".zshrc file additions"
-    
+    cat zshrc_additions.txt >> ~/.zshrc
     echo ".zshrc additions complete"
 }
 
@@ -55,7 +55,10 @@ zshrc_additions() {
 tmux_config() {
     echo "tmux configuration"
     sudo apt install xsel
-
+    mkdir ~/Downloads/Git
+    cd ~/Downloads/Git
+    git clone https://github.com/mauzk0/one-tmux-conf.git
+    cp /one-tmux-conf/.tmux.conf ~/
     echo "tmux configuration ready"
 }
 
