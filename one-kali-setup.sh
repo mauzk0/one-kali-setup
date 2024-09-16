@@ -55,9 +55,8 @@ zshrc_additions() {
 tmux_config() {
     echo "tmux configuration"
     sudo apt install xsel
-    mkdir ~/Downloads/Git
-    git clone https://github.com/mauzk0/one-tmux-conf.git ~/Downloads/Git
-    cp /one-tmux-conf/.tmux.conf ~/
+    git clone https://github.com/mauzk0/one-tmux-conf.git ~/Downloads/Git/one-tmux-conf
+    cp ~/Downloads/one-tmux-conf/.tmux.conf ~/
     echo "tmux configuration ready"
 }
 
