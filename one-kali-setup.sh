@@ -56,7 +56,7 @@ tmux_config() {
     echo "tmux configuration"
     sudo apt install xsel
     git clone https://github.com/mauzk0/one-tmux-conf.git ~/Downloads/Git/one-tmux-conf
-    cp ~/Downloads/one-tmux-conf/.tmux.conf ~/
+    cp ~/Downloads/Git/one-tmux-conf/.tmux.conf ~/
     echo "tmux configuration ready"
 }
 
