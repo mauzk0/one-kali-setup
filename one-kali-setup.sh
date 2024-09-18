@@ -33,12 +33,13 @@ install_tools() {
     export PATH=$PATH:/home/kali/go/bin
     # Git tools and packages
     mkdir ~/Git
-    git clone https://github.com/projectdiscovery/nuclei-templates.git
-    git clone https://github.com/peass-ng/PEASS-ng.git
+    git clone https://github.com/projectdiscovery/nuclei-templates.git ~/Git/nuclei-templates
+    git clone https://github.com/peass-ng/PEASS-ng.git ~/Git/PEAS-ng.git
     echo "Tools installed"
     # Tools adjustments and preparations
-    msfdb init
+    sudo msfdb init
     sudo usermod -aG kismet kali
+    # add Burp Suite Pro in future?
 }
 
 # SSH key re-generation
@@ -75,6 +76,7 @@ vscode_install() {
     rm -f packages.microsoft.gpg
     # Update the package cache and install the package using
     sudo apt install apt-transport-https
+    sudo apt clean && sudo apt autoclean && sudo apt autoremove
     sudo apt update
     sudo apt install code # or code-insiders
     # Set vscode as default editor
@@ -87,7 +89,7 @@ nessus_install() {
     echo "Installing Nessus"
     nessus_latest_deb=$(curl -s https://www.tenable.com/downloads/api/v1/public/pages/nessus | grep -Po 'Nessus-\d+\.\d+\.\d+-debian10_amd64\.deb' | head -n 1)
     curl -o ~/Downloads/$nessus_latest_deb --request GET https://www.tenable.com/downloads/api/v2/pages/nessus/files/$nessus_latest_deb
-    sudo dpkg -i $nessus_latest_deb
+    sudo dpkg -i ~/Downloads/$nessus_latest_deb
     echo "Nessus Installed"
 }
 
@@ -109,8 +111,7 @@ tmux_config() {
 
 # clean
 clean() {
-    sudo apt autoclean
-    sudo apt autoremove
+    sudo apt clean && sudo apt autoclean && sudo apt autoremove
 }
 
 # Script execution
