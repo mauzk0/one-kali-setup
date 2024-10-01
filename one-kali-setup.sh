@@ -10,7 +10,7 @@ system_update() {
 # Install tools
 install_tools() {
     echo "Installing tools:"
-    sudo apt install \
+    sudo apt install -y \
         realtek-rtl88xxau-dkms \
         autoconf \
         automake \
@@ -62,7 +62,7 @@ ssh-key-reconf() {
 
 # SSH, RDP and Fail2Ban
 remote_access() {
-    sudo apt install \
+    sudo apt install -y \
         xrdp \
         ufw
     sudo systemctl enable ssh
@@ -74,6 +74,9 @@ remote_access() {
     sudo systemctl enable fail2ban
     sudo systemctl start fail2ban
     # add ufw with allowed SSH access
+    sudo ufw default allow incoming
+    sudo ufw default allow outgoing
+    sudo ufw deny 8833
     sudo ufw allow OpenSSH
     sudo ufw enable
 }
@@ -82,7 +85,7 @@ remote_access() {
 vscode_install() {
     echo "VSCode installation"
     # MS apt repository and key manual installation
-    sudo apt install \
+    sudo apt install -y \
         wget \
         gpg
     wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
@@ -90,7 +93,7 @@ vscode_install() {
     echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" |sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
     rm -f packages.microsoft.gpg
     # Update the package cache and install the package using
-    sudo apt install \
+    sudo apt install -y \
         apt-transport-https
     sudo apt clean && sudo apt autoclean && sudo apt autoremove && sudo apt update
     sudo apt install code # or code-insiders
@@ -105,6 +108,7 @@ nessus_install() {
     nessus_latest_deb=$(curl -s https://www.tenable.com/downloads/api/v1/public/pages/nessus | grep -Po 'Nessus-\d+\.\d+\.\d+-debian10_amd64\.deb' | head -n 1)
     curl -o ~/Downloads/$nessus_latest_deb --request GET https://www.tenable.com/downloads/api/v2/pages/nessus/files/$nessus_latest_deb
     sudo dpkg -i ~/Downloads/$nessus_latest_deb
+    systemctl start nessusd
     echo "Nessus Installed"
 }
 
@@ -118,7 +122,7 @@ zshrc_additions() {
 # tmux configuration
 tmux_config() {
     echo "tmux configuration"
-    sudo apt install xsel
+    sudo apt install -y xsel
     git clone https://github.com/mauzk0/one-tmux-conf.git ~/Git/one-tmux-conf
     ln -s ~/Git/one-tmux-conf/.tmux.conf ~/.tmux.conf
     echo "tmux configuration ready"
