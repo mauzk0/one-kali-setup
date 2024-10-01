@@ -4,6 +4,7 @@
 system_update() {
     echo "Full system update:"
     sudo apt update && sudo apt upgrade -y && sudo apt full-upgrade -y
+    echo Europe/Prague >/etc/timezone && sudo dpkg-reconfigure -f noninteractive tzdata
     echo "System update finnished"
 }
 
