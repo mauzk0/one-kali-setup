@@ -4,7 +4,7 @@
 system_update() {
     echo "Full system update:"
     sudo apt update && sudo apt upgrade -y && sudo apt full-upgrade -y
-    echo Europe/Prague >/etc/timezone && sudo dpkg-reconfigure -f noninteractive tzdata
+    sudo timedatectl set-timezone Europe/Prague
     echo "System update finnished"
 }
 
@@ -77,8 +77,8 @@ remote_access() {
     # add ufw with allowed SSH access
     sudo ufw default allow incoming
     sudo ufw default allow outgoing
-    sudo ufw deny 8833
-    sudo ufw allow OpenSSH
+    sudo ufw deny 8834
+    sudo ufw allow OpenSSH # just sanity check if someone would change default incoming
     sudo ufw enable
 }
 
@@ -97,7 +97,7 @@ vscode_install() {
     sudo apt install -y \
         apt-transport-https
     sudo apt clean && sudo apt autoclean && sudo apt autoremove && sudo apt update
-    sudo apt install code # or code-insiders
+    sudo apt install -y code # or code-insiders
     # Set vscode as default editor
     sudo update-alternatives --set editor /usr/bin/code
     echo "VSCode installed"
@@ -107,9 +107,10 @@ vscode_install() {
 nessus_install() {
     echo "Installing Nessus"
     nessus_latest_deb=$(curl -s https://www.tenable.com/downloads/api/v1/public/pages/nessus | grep -Po 'Nessus-\d+\.\d+\.\d+-debian10_amd64\.deb' | head -n 1)
-    curl -o ~/Downloads/$nessus_latest_deb --request GET https://www.tenable.com/downloads/api/v2/pages/nessus/files/$nessus_latest_deb
-    sudo dpkg -i ~/Downloads/$nessus_latest_deb
-    systemctl start nessusd
+    sudo curl -o ~/tmp/$nessus_latest_deb --request GET https://www.tenable.com/downloads/api/v2/pages/nessus/files/$nessus_latest_deb
+    sudo dpkg -i ~/tmp/$nessus_latest_deb
+    sudo systemctl enable nessusd
+    sudo systemctl start nessusd
     echo "Nessus Installed"
 }
 
