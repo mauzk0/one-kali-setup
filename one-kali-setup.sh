@@ -30,7 +30,7 @@ install_default() {
 install_tools() {
     echo "Installing tools and repos:"
     sudo apt install -y \
-        seclists \
+        seclists
     # Install golang packages
     go install github.com/projectdiscovery/cvemap/cmd/cvemap@latest
     # Git tools and packages
