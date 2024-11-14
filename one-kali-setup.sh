@@ -10,7 +10,7 @@ system_update() {
 
 # Install tools
 install_default() {
-    echo "Installing tools:"
+    echo "Installing default apps:"
     sudo apt install -y \
         realtek-rtl88xxau-dkms \
         autoconf \
@@ -23,17 +23,18 @@ install_default() {
     mkdir ~/Git
 # Add path for Go binaries
     cat profile_additions.txt >> $HOME/.profile
+    echo "Default apps installed"
 }
 
 # Install tools and DBs
 install_tools() {
-    echo "Installing tools:"
+    echo "Installing tools and repos:"
     sudo apt install -y \
         seclists \
     # Install golang packages
     go install github.com/projectdiscovery/cvemap/cmd/cvemap@latest
     # Git tools and packages
-    git clone https://github.com/projectdiscovery/nuclei-templates.git ~/Git/nuclei-templates
+    git clone https://github.com/projectdiscovery/nuclei-templates.git $HOME/Git/nuclei-templates
     git clone https://github.com/peass-ng/PEASS-ng.git ~/Git/PEAS-ng
     echo "Tools installed"
     # Tools adjustments and preparations
@@ -42,7 +43,7 @@ install_tools() {
 
 # Install network tools
 install_tools_network() {
-    echo "Installing tools:"
+    echo "Installing network tools:"
     sudo apt install -y \
         yersinia \
         zaproxy \
@@ -70,7 +71,7 @@ install_tools_wireless() {
 
 # Install web tools
 install_tools_web() {
-    echo "Installing tools:"
+    echo "Installing web tools:"
     sudo apt install -y \
         gobuster \
         cyberchef \
@@ -97,6 +98,7 @@ ssh-key-reconf() {
 
 # SSH, RDP and Fail2Ban
 remote_access() {
+    echo "setup remote access with firewall"
     sudo apt install -y \
         xrdp \
         ufw \
@@ -115,6 +117,7 @@ remote_access() {
     sudo ufw deny 8834
     sudo ufw allow OpenSSH # just sanity check if someone would change default incoming
     sudo ufw enable
+    echo "firewall and remote access installed and configured"
 }
 
 # Install VSCode
