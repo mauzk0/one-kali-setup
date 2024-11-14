@@ -1,0 +1,5 @@
+
+# set PATH so it includes user's private bin for GO if it exists
+if [ -d "$HOME/go/bin" ] ; then
+    PATH="$HOME/go/bin:$PATH"
+fi

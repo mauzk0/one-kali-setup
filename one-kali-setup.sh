@@ -9,44 +9,78 @@ system_update() {
 }
 
 # Install tools
-install_tools() {
+install_default() {
     echo "Installing tools:"
     sudo apt install -y \
         realtek-rtl88xxau-dkms \
         autoconf \
         automake \
-        ufw \
-        yersinia \
         neofetch \
-        fail2ban \
-        zaproxy \
-        gobuster \
-        cyberchef \
-        seclists \
-        horst \
-        nuclei \
-        subfinder \
-        httpx-toolkit \
-        naabu \
-        bettercap \
-        beef-xss \
         golang \
         powershell \
-	sipvicious
+        xclip \
+	remmina
+    mkdir ~/Git
+# Add path for Go binaries
+    cat profile_additions.txt >> $HOME/.profile
+}
+
+# Install tools and DBs
+install_tools() {
+    echo "Installing tools:"
+    sudo apt install -y \
+        seclists \
     # Install golang packages
     go install github.com/projectdiscovery/cvemap/cmd/cvemap@latest
-    go install github.com/projectdiscovery/katana/cmd/katana@latest
-    # Add path for Go binaries
-    export PATH=$PATH:/home/kali/go/bin
     # Git tools and packages
-    mkdir ~/Git
     git clone https://github.com/projectdiscovery/nuclei-templates.git ~/Git/nuclei-templates
-    git clone https://github.com/peass-ng/PEASS-ng.git ~/Git/PEAS-ng.git
+    git clone https://github.com/peass-ng/PEASS-ng.git ~/Git/PEAS-ng
     echo "Tools installed"
     # Tools adjustments and preparations
     sudo msfdb init
+}
+
+# Install network tools
+install_tools_network() {
+    echo "Installing tools:"
+    sudo apt install -y \
+        yersinia \
+        zaproxy \
+        nuclei \
+        naabu \
+        bettercap \
+        sipvicious \
+        freeradius
+}
+
+# Install wireless tools
+install_tools_wireless() {
+    echo "Installing wireless tools:"
+    sudo apt install -y \
+        eaphammer \
+        horst \
+        asleap \
+        hostapd-mana \
+	gpsd-clients \
+	gpsd-tools \
+	gpsd
+# Add kali user to Kismet group
     sudo usermod -aG kismet kali
-    # add Burp Suite Pro in future?
+}
+
+# Install web tools
+install_tools_web() {
+    echo "Installing tools:"
+    sudo apt install -y \
+        gobuster \
+        cyberchef \
+        seclists \
+        subfinder \
+        httpx-toolkit \
+        beef-xss
+# Install Katana crawler
+    go install github.com/projectdiscovery/katana/cmd/katana@latest
+# add Burp Suite Pro in future?
 }
 
 # SSH key re-generation
@@ -65,7 +99,8 @@ ssh-key-reconf() {
 remote_access() {
     sudo apt install -y \
         xrdp \
-        ufw
+        ufw \
+        fail2ban
     sudo systemctl enable ssh
     sudo systemctl start ssh
     sudo systemctl enable xrdp
@@ -107,8 +142,8 @@ vscode_install() {
 nessus_install() {
     echo "Installing Nessus"
     nessus_latest_deb=$(curl -s https://www.tenable.com/downloads/api/v1/public/pages/nessus | grep -Po 'Nessus-\d+\.\d+\.\d+-debian10_amd64\.deb' | head -n 1)
-    sudo curl -o ~/tmp/$nessus_latest_deb --request GET https://www.tenable.com/downloads/api/v2/pages/nessus/files/$nessus_latest_deb
-    sudo dpkg -i ~/tmp/$nessus_latest_deb
+    sudo curl -o /tmp/$nessus_latest_deb --request GET https://www.tenable.com/downloads/api/v2/pages/nessus/files/$nessus_latest_deb
+    sudo dpkg -i /tmp/$nessus_latest_deb
     sudo systemctl enable nessusd
     sudo systemctl start nessusd
     echo "Nessus Installed"
@@ -138,7 +173,11 @@ clean() {
 # Script execution
 echo "Starting additional Kali tools installation and configuration"
 system_update
+install_default
 install_tools
+install_tools_network
+install_tools_wireless
+install_tools_web
 ssh-key-reconf
 remote_access
 vscode_install
