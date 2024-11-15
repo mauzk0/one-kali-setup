@@ -17,6 +17,8 @@ install_default() {
         automake \
         neofetch \
         golang \
+	jython \
+	maven \
         powershell \
         xclip \
 	remmina
@@ -51,6 +53,7 @@ install_tools_network() {
         naabu \
         bettercap \
         sipvicious \
+	ssh-audit \
         freeradius
 }
 
@@ -170,7 +173,7 @@ tmux_config() {
 
 # clean
 clean() {
-    sudo apt clean && sudo apt autoclean && sudo apt autoremove
+    sudo apt clean -y && sudo apt autoclean -y && sudo apt autoremove -y
 }
 
 # Script execution
