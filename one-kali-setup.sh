@@ -37,7 +37,7 @@ install_tools() {
     go install github.com/projectdiscovery/cvemap/cmd/cvemap@latest
     # Git tools and packages
     git clone https://github.com/projectdiscovery/nuclei-templates.git $HOME/Git/nuclei-templates
-    git clone https://github.com/peass-ng/PEASS-ng.git ~/Git/PEAS-ng
+    git clone https://github.com/peass-ng/PEASS-ng.git $HOME/Git/PEAS-ng
     echo "Tools installed"
     # Tools adjustments and preparations
     sudo msfdb init
@@ -68,6 +68,7 @@ install_tools_wireless() {
 	gpsd-clients \
 	gpsd-tools \
 	gpsd
+    git clone https://github.com/Kismon/kismon.git $HOME/Git/kismon
 # Add kali user to Kismet group
     sudo usermod -aG kismet kali
 }
@@ -137,7 +138,7 @@ vscode_install() {
     # Update the package cache and install the package using
     sudo apt install -y \
         apt-transport-https
-    sudo apt clean && sudo apt autoclean && sudo apt autoremove && sudo apt update
+    sudo apt clean -y && sudo apt autoclean -y && sudo apt autoremove -y && sudo apt update -y
     sudo apt install -y code # or code-insiders
     # Set vscode as default editor
     sudo update-alternatives --set editor /usr/bin/code
